@@ -1,11 +1,7 @@
 var express = require("express");
 var UserRouter = express.Router();
-var bodyParser = require("body-parser");
 
 var User = require("../models/User");
-//Body Parser
-UserRouter.use(bodyParser.urlencoded({ extended: true }));
-UserRouter.use(bodyParser.json());
 
 //CREATE A NEW USER
 UserRouter.post("/", function(req, res) {
