@@ -45,8 +45,8 @@ const getUser = (id, callback) => {
 };
 
 //UPDATE ONE USER.
-const updateUser = (id, callback) => {
-  usersModel.findByIdAndUpdate(id, (err, data) => {
+const updateUser = (id, body, returnNew, callback) => {
+  usersModel.findByIdAndUpdate(id, body, returnNew, (err, data) => {
     if (err) {
       console.log(err);
       callback(err);
@@ -57,10 +57,21 @@ const updateUser = (id, callback) => {
 };
 
 //DELETE ONE USER.
+const deleteUser = (id, callback) => {
+  usersModel.findByIdAndRemove(id, (err, data) => {
+    if (err) {
+      console.log(err);
+      callback(err);
+    } else {
+      callback(null, data);
+    }
+  });
+};
 
 module.exports = {
   createUser,
   getAllUser,
   getUser,
-  updateUser
+  updateUser,
+  deleteUser
 };

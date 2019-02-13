@@ -29,8 +29,26 @@ router.get("/:id", (req, res) => {
   });
 });
 
-//UPDATE ONE USER.
+router.put("/:id", (req, res) => {
+  userController.updateUser(
+    req.params.id,
+    req.body,
+    { new: true },
+    (err, data) => {
+      if (err) res.status(500).send({ success: false, message: err.message });
+      if (!data) res.status(404).send({ success: true, message: err.message });
+      else res.status(200).send(data);
+    }
+  );
+});
 
 //DELETE ONE USER.
+router.delete("/:id", (req, res) => {
+  userController.deleteUser(req.params.id, (err, data) => {
+    if (err) res.status(500).send({ success: false, message: err.message });
+    if (!data) res.status(404).send({ success: true, message: err.message });
+    else res.status(200).send(data);
+  });
+});
 
 module.exports = router;
