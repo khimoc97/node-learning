@@ -1,47 +1,45 @@
 var express = require("express");
-var UserRouter = express.Router();
+var router = express.Router();
 
 var User = require("../models/User");
+var userController = require("../controllers/UserController");
 
 //CREATE A NEW USER
-UserRouter.post("/", function(req, res) {
-  User.create(
-    {
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password
-    },
-    function(err, user) {
-      if (err)
-        return res
-          .status(500)
-          .send("There was a problem adding the information to the database.");
-      res.status(200).send(user);
-    }
-  );
+router.post("/", (req, res) => {
+  userController.createUser(req.body, (err, data) => {
+    if (err) res.status(500).send({ success: false, message: err.message });
+    else res.status(200).send({ success: true });
+  });
 });
 
 //RETURN ALL THE USER IN THE DB
-UserRouter.get("/", function(req, res) {
-  User.find({}, function(err, users) {
-    if (err)
-      return res.status(500).send("There was a problem finding the users.");
-    res.status(200).send(users);
+router.get("/", (req, res) => {
+  userController.getAllUser((err, data) => {
+    if (err) res.status(500).send({ message: err.message });
+    else res.status(200).send(data);
   });
 });
 
 //GET ONE USER.
-UserRouter.get("/:id", function(req, res) {
-  User.findById(req.params.id, function(err, user) {
-    if (err)
-      return res.status(500).send("There was a problem finding the user.");
-    if (!user) return res.status(404).send("No user found.");
-    res.status(200).send(user);
+router.get("/:id", (req, res) => {
+  userController.getUser(req.params.id, (err, data) => {
+    if (err) res.status(500).send({ success: false, message: err.message });
+    if (!data) res.status(404).send({ success: true, message: err.message });
+    else res.status(200).send(data);
+  });
+});
+
+//UPDATE ONE USER.
+router.put("/:id", (req, res) => {
+  userController.updateUser(req.params.id, (err, data) => {
+    if (err) res.status(500).send({ success: false, message: err.message });
+    if (!data) res.status(404).send({ success: true, message: err.message });
+    else res.status(200).send(data);
   });
 });
 
 //DELETE ONE USER.
-UserRouter.delete("/:id", function(req, res) {
+router.delete("/:id", function(req, res) {
   User.findByIdAndRemove(req.params.id, function(err, user) {
     if (err)
       return res.status(500).send("There was a problem finding the user.");
@@ -50,14 +48,4 @@ UserRouter.delete("/:id", function(req, res) {
   });
 });
 
-//UPDATE ONE USER.
-UserRouter.put("/:id", function(req, res) {
-  User.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, user) {
-    if (err)
-      return res.status(500).send("There was a problem finding the user.");
-    if (!user) return res.status(404).send("No user found.");
-  res.status(200).send(user);
-  });
-});
-
-module.exports = UserRouter;
+module.exports = router;
