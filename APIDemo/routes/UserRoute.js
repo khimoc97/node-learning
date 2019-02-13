@@ -30,22 +30,7 @@ router.get("/:id", (req, res) => {
 });
 
 //UPDATE ONE USER.
-router.put("/:id", (req, res) => {
-  userController.updateUser(req.params.id, (err, data) => {
-    if (err) res.status(500).send({ success: false, message: err.message });
-    if (!data) res.status(404).send({ success: true, message: err.message });
-    else res.status(200).send(data);
-  });
-});
 
 //DELETE ONE USER.
-router.delete("/:id", function(req, res) {
-  User.findByIdAndRemove(req.params.id, function(err, user) {
-    if (err)
-      return res.status(500).send("There was a problem finding the user.");
-    if (!user) return res.status(404).send("No user fond.");
-    res.status(200).send("User " + user.name + " was delete.");
-  });
-});
 
 module.exports = router;
