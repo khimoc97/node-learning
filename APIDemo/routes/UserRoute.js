@@ -30,4 +30,34 @@ UserRouter.get("/", function(req, res) {
   });
 });
 
+//GET ONE USER.
+UserRouter.get("/:id", function(req, res) {
+  User.findById(req.params.id, function(err, user) {
+    if (err)
+      return res.status(500).send("There was a problem finding the user.");
+    if (!user) return res.status(404).send("No user found.");
+    res.status(200).send(user);
+  });
+});
+
+//DELETE ONE USER.
+UserRouter.delete("/:id", function(req, res) {
+  User.findByIdAndRemove(req.params.id, function(err, user) {
+    if (err)
+      return res.status(500).send("There was a problem finding the user.");
+    if (!user) return res.status(404).send("No user fond.");
+    res.status(200).send("User " + user.name + " was delete.");
+  });
+});
+
+//UPDATE ONE USER.
+UserRouter.put("/:id", function(req, res) {
+  User.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, user) {
+    if (err)
+      return res.status(500).send("There was a problem finding the user.");
+    if (!user) return res.status(404).send("No user found.");
+  res.status(200).send(user);
+  });
+});
+
 module.exports = UserRouter;
