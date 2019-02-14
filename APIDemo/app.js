@@ -10,5 +10,7 @@ app.use(bodyParser.json());
 //Route
 var UserRoute = require("./routes/UserRoute");
 app.use("/users", UserRoute);
+var AuthRoute = require("./routes/AuthRoute");
+app.use("/api/auth", AuthRoute);
 
 module.exports = app;

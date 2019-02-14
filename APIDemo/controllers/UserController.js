@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const usersModel = require("../models/User");
 
 //CREATE NEW USER.
@@ -33,13 +33,25 @@ const getAllUser = callback => {
 };
 
 //GET ONE USER.
-const getUser = (id, callback) => {
-  usersModel.findById(id).exec((err, data) => {
+const getUser = (id, projection, callback) => {
+  usersModel.findById(id, projection).exec((err, data) => {
     if (err) {
       console.log(err);
       callback(err);
     } else {
       callback(null, data);
+    }
+  });
+};
+
+//GET USER - LOGIN
+const getLoginUser = (req, callback)=>{
+  usersModel.findOne({email: req.body.email}, (err, user)=>{
+    if(err){
+      console.log(err);
+      callback(err);
+    }else{
+      callback(null, user);
     }
   });
 };
@@ -73,5 +85,6 @@ module.exports = {
   getAllUser,
   getUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  getLoginUser
 };
