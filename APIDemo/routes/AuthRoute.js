@@ -1,9 +1,9 @@
-var express = require("express");
-var router = express.Router();
-var bcryptjs = require("bcryptjs");
+const express = require("express");
+const router = express.Router();
+const bcryptjs = require("bcryptjs");
 
-var authController = require("../controllers/AuthController");
-var userController = require("../controllers/UserController");
+const authController = require("../controllers/AuthController");
+const userController = require("../controllers/UserController");
 
 //CREATE TOKEN
 router.post("/register", (req, res) => {
@@ -19,7 +19,7 @@ router.post("/register", (req, res) => {
 
 //GET REQUESTER ID
 router.get("/me", (req, res) => {
-  var token = req.headers["x-access-token"];
+  let token = req.headers["x-access-token"];
   if (!token) {
     return res.status(401).send({ auth: false, message: "No Token Provided." });
   } else {
@@ -43,7 +43,7 @@ router.post("/login", (req, res) => {
     if (err) res.status(500).send({ login: false, message: err.message });
     if (!user) res.status(404).send({ login: false, message: err.message });
     else {
-      var isValidPassword = bcryptjs.compareSync(
+      let isValidPassword = bcryptjs.compareSync(
         req.body.password,
         user.password
       );

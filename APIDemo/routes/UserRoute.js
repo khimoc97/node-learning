@@ -1,7 +1,7 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 
-var userController = require("../controllers/UserController");
+const userController = require("../controllers/UserController");
 
 //CREATE A NEW USER
 router.post("/", (req, res) => {

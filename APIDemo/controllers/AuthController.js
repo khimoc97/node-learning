@@ -1,9 +1,8 @@
-var jwt = require("jsonwebtoken");
-var bcryptjs = require("bcryptjs");
-var config = require("../config");
+const jwt = require("jsonwebtoken");
+const config = require("../config");
 
 const createToken = (user, callback) => {
-  var token = jwt.sign(
+  let token = jwt.sign(
     { id: user.id },
     config.secret,
     { expiresIn: 86400 },
