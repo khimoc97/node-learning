@@ -3,50 +3,60 @@ const router = express.Router();
 const userController = require("../controllers/UserController");
 
 //CREATE A NEW USER
-router.post("/", (req, res) => {
-  userController.createUser(req.body, (err, data) => {
-    if (err) res.status(500).send({ success: false, message: err.message });
-    else res.status(200).send({ success: true });
-  });
+router.post("/", async (req, res) => {
+  try {
+    let user = await userController.createUserAsync(req.body);
+    res.status(200).send(user);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 //RETURN ALL THE USER IN THE DB
-router.get("/", (req, res) => {
-  userController.getAllUser((err, data) => {
-    if (err) res.status(500).send({ message: err.message });
-    else res.status(200).send(data);
-  });
+router.get("/", async (req, res) => {
+  try {
+    let listUser = await userController.getUserAsync({}, {});
+    res.status(200).send(listUser);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 //GET ONE USER.
-router.get("/:id", (req, res) => {
-  userController.getUser(req.params.id, {}, (err, data) => {
-    if (err) res.status(500).send({ success: false, message: err.message });
-    if (!data) res.status(404).send({ success: true, message: err.message });
-    else res.status(200).send(data);
-  });
+router.get("/:id", async (req, res) => {
+  try {
+    let user = await userController.getUserAsync(
+      { _id: req.params.id },
+      { password: 0 }
+    );
+    res.status(200).send(user);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
-router.put("/:id", (req, res) => {
-  userController.updateUser(
-    req.params.id,
-    req.body,
-    { new: true },
-    (err, data) => {
-      if (err) res.status(500).send({ success: false, message: err.message });
-      if (!data) res.status(404).send({ success: true, message: err.message });
-      else res.status(200).send(data);
-    }
-  );
+//UPDATE USER.
+router.put("/:id", async (req, res) => {
+  try {
+    let newUser = await userController.updateUserAsync(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    res.status(200).send(newUser);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 //DELETE ONE USER.
-router.delete("/:id", (req, res) => {
-  userController.deleteUser(req.params.id, (err, data) => {
-    if (err) res.status(500).send({ success: false, message: err.message });
-    if (!data) res.status(404).send({ success: true, message: err.message });
-    else res.status(200).send(data);
-  });
+router.delete("/:id", async (req, res) => {
+  try{
+    let user = await userController.deleteUserAsync(req.params.id);
+    res.status(200).send(user);
+  }catch(error){
+    res.status(500).send(error);
+  }
 });
 
 module.exports = router;
