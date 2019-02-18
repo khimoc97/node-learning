@@ -1,1 +1,13 @@
+Question:
 res.render('index', { coins: coins }); - what is second parameter?
+Answer:
+
+Question:
+async function getData(){
+	let data = await restAPI.get();
+	return data;
+}
+
+in calling do we need await: let data = await getData();
+Answers:
+With above, yes. To remove await in let data = await getData() change function to return await restAPI.get().
