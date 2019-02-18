@@ -1,9 +1,10 @@
 const bcryptjs = require("bcryptjs");
 const usersModel = require("../models/User");
+const config = require("../config");
 
 //CREATE NEW USER.
 const createUserAsync = async user => {
-  let hashedPassword = await bcryptjs.hash(user.password, 10);
+  let hashedPassword = await hashPassword(user.password);
 
   let newUser = {
     name: user.name,
@@ -23,6 +24,7 @@ const getUserAsync = async (condition, projection) => {
 
 //UPDATE ONE USER.
 const updateUserAsync = async (id, body, returnNew) => {
+  body.password = await hashPassword(body.password,10);
   let updatedUser = await usersModel.findByIdAndUpdate(id, body, returnNew);
   return updatedUser;
 };
@@ -31,6 +33,11 @@ const updateUserAsync = async (id, body, returnNew) => {
 const deleteUserAsync = async id => {
   let user = await usersModel.findByIdAndRemove(id);
   return user;
+};
+
+//Private function
+const hashPassword = async (password)=>{
+  return await bcryptjs.hash(password,  config.salt);
 };
 
 module.exports = {

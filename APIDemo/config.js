@@ -1,1 +1,1 @@
-module.exports = { 'secret': "jwtdemo" };
+module.exports = { secret: "jwtdemo", salt: 10 };
