@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-
-const User = require("../models/User");
 const userController = require("../controllers/UserController");
 
 //CREATE A NEW USER
@@ -22,7 +20,7 @@ router.get("/", (req, res) => {
 
 //GET ONE USER.
 router.get("/:id", (req, res) => {
-  userController.getUser(req.params.id, (err, data) => {
+  userController.getUser(req.params.id, {}, (err, data) => {
     if (err) res.status(500).send({ success: false, message: err.message });
     if (!data) res.status(404).send({ success: true, message: err.message });
     else res.status(200).send(data);
