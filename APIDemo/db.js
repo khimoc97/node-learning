@@ -1,2 +1,2 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/APIDemo');
+mongoose.connect('mongodb+srv://memoteadmin:khicon0511@memote-uwrr5.gcp.mongodb.net/test?retryWrites=true');
